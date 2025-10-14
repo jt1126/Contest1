@@ -464,3 +464,14 @@ AlreadyRev:
     popad
     ret
 RevealAll ENDP
+
+RevealCellRecursive PROC
+
+RevealRet:
+    ret
+    
+MineRevealed:
+    mov gameOver, 1
+    ret
+RevealCellRecursive ENDP
+END main
