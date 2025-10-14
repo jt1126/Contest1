@@ -505,6 +505,29 @@ RevealCellRecursive PROC
     cmp dl, 0
     jne RevealRet
 
+    ; Recursively reveal all 8 neighbors
+    push eax
+    push ebx
+    dec eax
+    dec ebx
+    call RevealCellRecursive
+    inc ebx
+    call RevealCellRecursive
+    inc ebx
+    call RevealCellRecursive
+    inc eax
+    call RevealCellRecursive
+    inc eax
+    call RevealCellRecursive
+    dec ebx
+    call RevealCellRecursive
+    dec ebx
+    call RevealCellRecursive
+    dec eax
+    call RevealCellRecursive
+    pop ebx
+    pop eax
+
 RevealRet:
     ret
     
