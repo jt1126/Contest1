@@ -244,3 +244,20 @@ NotMineDisplay:
     mov al, '.'
     call WriteChar
     jmp AfterDisplay
+    
+HasNumber:
+    add ah, '0'
+    mov al, ah
+    call WriteChar
+    jmp AfterDisplay
+    
+NotRevealed:
+    test al, FLAG_MASK
+    jz HiddenCell
+    mov al, 'F'
+    call WriteChar
+    jmp AfterDisplay
+    
+HiddenCell:
+    mov al, '#'
+    call WriteChar
