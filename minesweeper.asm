@@ -26,20 +26,25 @@ winMsg     BYTE "You cleared the field! (N)ew or (Q)uit",0
 main PROC
     call Randomize
     call NewGameProc
-    mov eax, 1000        ; 1 second pause
+    mov eax, 1000        
+    ; 1 second pause
     call Delay
-    call DrawScreen            ; draw once at start
+    call DrawScreen            
+    ; draw once at start
     
 GameLoop:
-    call HandleInput           ; AL=1 if state changed
+    call HandleInput           
+    ; AL=1 if state changed
     test al, al
-    jz   GameLoop              ; no input → skip redraw
+    jz   GameLoop              
+    ; no input → skip redraw
 
     ; if a move caused game over, reveal all mines
     cmp gameOver, 1
     jne  CheckWinState
     call RevealAll
-    mov eax, 1000        ; 1 second pause
+    mov eax, 1000        
+    ; 1 second pause
     call Delay
     call DrawScreen
 
@@ -50,7 +55,8 @@ CheckWinState:
     cmp won, 1
     jne  Redraw
     call RevealAll
-    mov eax, 1000        ; 1 second pause
+    mov eax, 1000        
+    ; 1 second pause
     call Delay
     call DrawScreen
     jmp  GameLoop
@@ -133,10 +139,11 @@ DoneAdj:
     ret
 ComputeAdjacency ENDP
 
+
 BumpNeighbors PROC
     pushad
-    mov ebp, [esp+36]  ; get r from stack
-    mov ebx, [esp+40]  ; get c from stack
+    mov ebp, [esp+36]  ; gets r from stack
+    mov ebx, [esp+40]  ; gets c from stack
     
     ; Check all 8 neighbors
     mov eax, ebp
@@ -343,9 +350,9 @@ DrawScreen ENDP
 
 HandleInput PROC
     pushad
-    xor eax, eax              ; AL=0 -> default: no redraw
+    xor eax, eax; AL=0 -> default: no redraw
 
-    call ReadKey          ; Otherwise, read it
+    call ReadKey; Otherwise, read it
 
 
     ; quit
@@ -356,7 +363,7 @@ HandleInput PROC
     cmp al,'n'
     jne CheckW
     call NewGameProc
-    mov  al,1                 ; changed
+    mov  al,1         
     jmp  InputDone
 
 CheckW:
@@ -413,7 +420,7 @@ DoReveal:
     je  NoMove
     cmp won,1
     je  NoMove
-    call RevealAtCursorProc     ; may set gameOver
+    call RevealAtCursorProc
     mov  al,1               
     jmp  InputDone
 
