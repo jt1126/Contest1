@@ -343,3 +343,28 @@ CheckA:
     dec cursorCol
     mov al,1
     jmp InputDone
+CheckD:
+    cmp al,'d'
+    jne CheckFlag
+    cmp cursorCol,COLS-1
+    jge NoMove
+    inc cursorCol
+    mov al,1
+    jmp InputDone
+
+CheckFlag:
+    cmp al,'f'
+    jne CheckReveal
+    cmp gameOver,1
+    je  NoMove
+    cmp won,1
+    je  NoMove
+    call ToggleFlagAtCursor
+    mov  al,1
+    jmp  InputDone
+
+CheckReveal:
+    cmp al,13
+    je  DoReveal
+    cmp al,' '
+    jne NoMove
