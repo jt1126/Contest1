@@ -476,7 +476,27 @@ RevealCellRecursive PROC
     jl RevealRet
     cmp ebx, COLS
     jge RevealRet
-
+    
+    ; Calculate index
+    mov ecx, eax
+    imul ecx, COLS
+    add ecx, ebx
+    mov edi, OFFSET board
+    add edi, ecx
+    
+    ; Check if already revealed or flagged
+    test BYTE PTR [edi], REVEALED_MASK
+    jnz RevealRet
+    test BYTE PTR [edi], FLAG_MASK
+    jnz RevealRet
+    
+    ; Reveal cell
+    or BYTE PTR [edi], REVEALED_MASK
+    inc cellsRev
+    
+    ; If mine, game over
+    test BYTE PTR [edi], MINE_MASK
+    jnz MineRevealed
 
 RevealRet:
     ret
