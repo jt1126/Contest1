@@ -300,3 +300,21 @@ StatusDone:
     popad
     ret
 DrawScreen ENDP
+
+HandleInput PROC
+    pushad
+    xor eax, eax              ; AL=0 -> default: no redraw
+
+    call ReadKey          ; Otherwise, read it
+
+
+    ; quit
+    cmp al,'q'
+    je  QuitProg
+
+    ; new game
+    cmp al,'n'
+    jne CheckW
+    call NewGameProc
+    mov  al,1
+    jmp  InputDone
