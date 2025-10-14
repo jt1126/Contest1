@@ -217,8 +217,30 @@ DrawCols:
     jne NoCursor
     cmp dh, bl
     jne NoCursor
-    ; Set cursor color - FIXED REGISTER USAGE
+    ; Set cursor color
     push eax
     mov eax, yellow + (black SHL 4)
     call SetTextColor
     pop eax
+    
+NoCursor:
+    ; Display the cell content
+    test al, REVEALED_MASK
+    jz NotRevealed
+    
+    ; Revealed cell
+    test al, MINE_MASK
+    jz NotMineDisplay
+    mov al, '*'
+    call WriteChar
+    jmp AfterDisplay
+    
+NotMineDisplay:
+    mov ah, al
+    and ah, ADJ_MASK
+    shr ah, 1
+    cmp ah, 0
+    jne HasNumber
+    mov al, '.'
+    call WriteChar
+    jmp AfterDisplay
