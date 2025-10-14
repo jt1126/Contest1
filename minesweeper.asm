@@ -403,3 +403,27 @@ ToggleRet:
     popad
     ret
 ToggleFlagAtCursor ENDP
+
+RevealAtCursorProc PROC
+    pushad
+    movzx eax, cursorRow
+    movzx ebx, cursorCol
+    call RevealCellRecursive  
+    popad
+    ret
+RevealAtCursorProc ENDP
+
+RevealAll PROC
+    pushad
+    mov ecx, BOARD_SIZE
+    mov edi, OFFSET board
+RevealLoop:
+    test BYTE PTR [edi], REVEALED_MASK
+    jnz AlreadyRev
+    or   BYTE PTR [edi], REVEALED_MASK
+AlreadyRev:
+    inc edi
+    loop RevealLoop
+    popad
+    ret
+RevealAll ENDP
