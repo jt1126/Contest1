@@ -318,3 +318,28 @@ HandleInput PROC
     call NewGameProc
     mov  al,1
     jmp  InputDone
+
+CheckW:
+    cmp al,'w'
+    jne CheckS
+    cmp cursorRow,0
+    jle NoMove
+    dec cursorRow
+    mov al,1
+    jmp InputDone
+CheckS:
+    cmp al,'s'
+    jne CheckA
+    cmp cursorRow,ROWS-1
+    jge NoMove
+    inc cursorRow
+    mov al,1
+    jmp InputDone
+CheckA:
+    cmp al,'a'
+    jne CheckD
+    cmp cursorCol,0
+    jle NoMove
+    dec cursorCol
+    mov al,1
+    jmp InputDone
