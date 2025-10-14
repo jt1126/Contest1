@@ -33,23 +33,23 @@ main PROC
 GameLoop:
     call HandleInput           ; AL=1 if state changed
     test al, al
-    jz   GameLoop              ; no input skip redraw
+    jz   GameLoop              ; no input → skip redraw
 
     ; if a move caused game over, reveal all mines
     cmp gameOver, 1
     jne  CheckWinState
-    call RevealAll             
+    call RevealAll
     mov eax, 1000        ; 1 second pause
     call Delay
     call DrawScreen
 
 
     jmp  GameLoop
-    
-    CheckWinState:
+
+CheckWinState:
     cmp won, 1
     jne  Redraw
-    call RevealAll             ; optionally reveal entire field on win too
+    call RevealAll
     mov eax, 1000        ; 1 second pause
     call Delay
     call DrawScreen
@@ -58,9 +58,11 @@ GameLoop:
 Redraw:
     mov eax,150        
     call Delay
-    call DrawScreen            ; normal event-driven redraw
+    call DrawScreen; normal event-driven redraw
     jmp  GameLoop
 main ENDP
+
+
 
 NewGameProc PROC
     mov gameOver, 0
@@ -153,7 +155,7 @@ BumpNeighbors PROC
     mov edx, ebx
     inc edx
     call BumpOne
-        
+    
     mov eax, ebp
     mov edx, ebx
     dec edx
@@ -254,7 +256,7 @@ DrawCols:
     jne NoCursor
     cmp dh, bl
     jne NoCursor
-    ; Set cursor color
+    ; Set cursor color - FIXED REGISTER USAGE
     push eax
     mov eax, yellow + (black SHL 4)
     call SetTextColor
@@ -325,7 +327,7 @@ DoneDrawing:
     mov edx, OFFSET loseMsg
     call WriteString
     jmp StatusDone
-        
+    
 CheckWin:
     cmp won, 1
     jne StatusDone
@@ -337,6 +339,7 @@ StatusDone:
     popad
     ret
 DrawScreen ENDP
+
 
 HandleInput PROC
     pushad
@@ -353,7 +356,7 @@ HandleInput PROC
     cmp al,'n'
     jne CheckW
     call NewGameProc
-    mov  al,1
+    mov  al,1                 ; changed
     jmp  InputDone
 
 CheckW:
@@ -405,25 +408,25 @@ CheckReveal:
     je  DoReveal
     cmp al,' '
     jne NoMove
-    
 DoReveal:
     cmp gameOver,1
     je  NoMove
     cmp won,1
     je  NoMove
     call RevealAtCursorProc     ; may set gameOver
-    mov  al,1                   ; changed (also covers win/lose)
+    mov  al,1               
     jmp  InputDone
 
 QuitProg:
     INVOKE ExitProcess,0
 
 NoMove:
-    ; state unchanged -> AL remains 0
+    ; state unchanged AL remains 0
 InputDone:
     popad
     ret
 HandleInput ENDP
+
 
 ToggleFlagAtCursor PROC
     pushad
@@ -465,6 +468,7 @@ AlreadyRev:
     ret
 RevealAll ENDP
 
+
 RevealCellRecursive PROC
     ; Input: eax = row, ebx = col
     ; Check bounds
@@ -497,14 +501,14 @@ RevealCellRecursive PROC
     ; If mine, game over
     test BYTE PTR [edi], MINE_MASK
     jnz MineRevealed
-
-     ; If no adjacent mines, reveal neighbors recursively
+    
+    ; If no adjacent mines, reveal neighbors recursively
     mov dl, [edi]
     and dl, ADJ_MASK
     shr dl, 1
     cmp dl, 0
     jne RevealRet
-
+    
     ; Recursively reveal all 8 neighbors
     push eax
     push ebx
@@ -527,7 +531,7 @@ RevealCellRecursive PROC
     call RevealCellRecursive
     pop ebx
     pop eax
-
+    
 RevealRet:
     ret
     
