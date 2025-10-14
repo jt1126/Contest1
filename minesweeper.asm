@@ -178,3 +178,22 @@ BumpOne PROC
 BumpRet:
     ret
 BumpOne ENDP
+
+DrawScreen PROC
+    pushad
+    call Clrscr
+    mov dh, 0
+    mov dl, 0
+    call Gotoxy
+    mov edx, OFFSET titleMsg
+    call WriteString
+    call Crlf
+    call Crlf
+
+    ; draw grid with proper row/column tracking
+    mov esi, 0
+    mov ecx, 0  ; row counter
+DrawRows:
+    cmp ecx, ROWS
+    jge DoneDrawing
+    mov ebx, 0  ; col counter
