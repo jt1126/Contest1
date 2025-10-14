@@ -116,3 +116,34 @@ BumpNeighbors PROC
     mov edx, ebx
     inc edx
     call BumpOne
+        
+    mov eax, ebp
+    mov edx, ebx
+    dec edx
+    call BumpOne
+    
+    mov eax, ebp
+    mov edx, ebx
+    inc edx
+    call BumpOne
+    
+    mov eax, ebp
+    inc eax
+    mov edx, ebx
+    dec edx
+    call BumpOne
+    
+    mov eax, ebp
+    inc eax
+    mov edx, ebx
+    call BumpOne
+    
+    mov eax, ebp
+    inc eax
+    mov edx, ebx
+    inc edx
+    call BumpOne
+    
+    popad
+    ret
+BumpNeighbors ENDP
