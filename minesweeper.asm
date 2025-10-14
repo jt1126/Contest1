@@ -288,3 +288,15 @@ DoneDrawing:
     mov edx, OFFSET loseMsg
     call WriteString
     jmp StatusDone
+        
+CheckWin:
+    cmp won, 1
+    jne StatusDone
+    mov edx, OFFSET winMsg
+    call WriteString
+    
+StatusDone:
+    call Crlf
+    popad
+    ret
+DrawScreen ENDP
