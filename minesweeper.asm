@@ -33,19 +33,34 @@ main PROC
 GameLoop:
     call HandleInput           ; AL=1 if state changed
     test al, al
-    jz   GameLoop              ; no input → skip redraw
+    jz   GameLoop              ; no input skip redraw
 
     ; if a move caused game over, reveal all mines
     cmp gameOver, 1
     jne  CheckWinState
-    call RevealAll             ; <-- new procedure
+    call RevealAll             
     mov eax, 1000        ; 1 second pause
     call Delay
     call DrawScreen
 
 
     jmp  GameLoop
+    
+    CheckWinState:
+    cmp won, 1
+    jne  Redraw
+    call RevealAll             ; optionally reveal entire field on win too
+    mov eax, 1000        ; 1 second pause
+    call Delay
+    call DrawScreen
+    jmp  GameLoop
 
+Redraw:
+    mov eax,150        
+    call Delay
+    call DrawScreen            ; normal event-driven redraw
+    jmp  GameLoop
+main ENDP
 
 NewGameProc PROC
     mov gameOver, 0
