@@ -67,3 +67,29 @@ DonePlace:
     ret
 
 InitBoard ENDP
+
+ComputeAdjacency PROC
+    pushad
+    mov esi, 0
+NextCell:
+    cmp esi, BOARD_SIZE
+    jge DoneAdj
+    mov edi, OFFSET board
+    add edi, esi
+    test BYTE PTR [edi], MINE_MASK
+    jz NotMine
+    mov eax, esi
+    xor edx, edx
+    mov ebx, COLS
+    div ebx
+    push edx
+    push eax
+    call BumpNeighbors
+    add esp, 8
+NotMine:
+    inc esi
+    jmp NextCell
+DoneAdj:
+    popad
+    ret
+ComputeAdjacency ENDP
