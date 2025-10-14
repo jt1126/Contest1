@@ -387,3 +387,19 @@ InputDone:
     popad
     ret
 HandleInput ENDP
+
+ToggleFlagAtCursor PROC
+    pushad
+    movzx eax, cursorRow
+    movzx ebx, cursorCol
+    imul eax, COLS
+    add eax, ebx
+    mov edi, OFFSET board
+    add edi, eax
+    test BYTE PTR [edi], REVEALED_MASK
+    jnz ToggleRet
+    xor BYTE PTR [edi], FLAG_MASK
+ToggleRet:
+    popad
+    ret
+ToggleFlagAtCursor ENDP
