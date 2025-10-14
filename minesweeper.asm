@@ -261,3 +261,30 @@ NotRevealed:
 HiddenCell:
     mov al, '#'
     call WriteChar
+    
+AfterDisplay:
+    ; Reset color and add space
+    push eax
+    mov eax, white + (black SHL 4)
+    call SetTextColor
+    mov al, ' '
+    call WriteChar
+    pop eax
+    
+    inc ebx
+    jmp DrawCols
+
+NextRow:
+    call Crlf
+    inc ecx
+    jmp DrawRows
+
+DoneDrawing:
+    call Crlf
+    
+    ; Display game status
+    cmp gameOver, 1
+    jne CheckWin
+    mov edx, OFFSET loseMsg
+    call WriteString
+    jmp StatusDone
