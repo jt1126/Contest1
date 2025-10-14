@@ -24,6 +24,17 @@ winMsg     BYTE "You cleared the field! (N)ew or (Q)uit",0
 
 .code
 
+
+NewGameProc PROC
+    mov gameOver, 0
+    mov won, 0
+    mov cellsRev, 0
+    mov cursorRow, 0
+    mov cursorCol, 0
+    call InitBoard
+    ret
+NewGameProc ENDP
+
 InitBoard PROC
     pushad
     mov ecx, BOARD_SIZE
@@ -50,3 +61,9 @@ PlaceLoop:
     or BYTE PTR [edi], MINE_MASK
     inc ebx
     jmp PlaceLoop
+DonePlace:
+    call ComputeAdjacency
+    popad
+    ret
+
+InitBoard ENDP
