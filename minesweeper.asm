@@ -498,6 +498,13 @@ RevealCellRecursive PROC
     test BYTE PTR [edi], MINE_MASK
     jnz MineRevealed
 
+     ; If no adjacent mines, reveal neighbors recursively
+    mov dl, [edi]
+    and dl, ADJ_MASK
+    shr dl, 1
+    cmp dl, 0
+    jne RevealRet
+
 RevealRet:
     ret
     
