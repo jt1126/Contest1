@@ -466,6 +466,17 @@ AlreadyRev:
 RevealAll ENDP
 
 RevealCellRecursive PROC
+    ; Input: eax = row, ebx = col
+    ; Check bounds
+    cmp eax, 0
+    jl RevealRet
+    cmp eax, ROWS
+    jge RevealRet
+    cmp ebx, 0
+    jl RevealRet
+    cmp ebx, COLS
+    jge RevealRet
+
 
 RevealRet:
     ret
