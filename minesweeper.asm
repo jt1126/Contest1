@@ -93,3 +93,26 @@ DoneAdj:
     popad
     ret
 ComputeAdjacency ENDP
+
+BumpNeighbors PROC
+    pushad
+    mov ebp, [esp+36]  ; get r from stack
+    mov ebx, [esp+40]  ; get c from stack
+    
+    ; Check all 8 neighbors
+    mov eax, ebp
+    dec eax
+    mov edx, ebx
+    dec edx
+    call BumpOne
+    
+    mov eax, ebp
+    dec eax
+    mov edx, ebx
+    call BumpOne
+    
+    mov eax, ebp
+    dec eax
+    mov edx, ebx
+    inc edx
+    call BumpOne
