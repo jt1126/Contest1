@@ -368,3 +368,22 @@ CheckReveal:
     je  DoReveal
     cmp al,' '
     jne NoMove
+    
+DoReveal:
+    cmp gameOver,1
+    je  NoMove
+    cmp won,1
+    je  NoMove
+    call RevealAtCursorProc     ; may set gameOver
+    mov  al,1                   ; changed (also covers win/lose)
+    jmp  InputDone
+
+QuitProg:
+    INVOKE ExitProcess,0
+
+NoMove:
+    ; state unchanged -> AL remains 0
+InputDone:
+    popad
+    ret
+HandleInput ENDP
