@@ -21,3 +21,32 @@ won        BYTE 0
 titleMsg   BYTE "Minesweeper (WASD=Move, Space=Reveal, F=Flag, N=New, Q=Quit)",0
 loseMsg    BYTE "BOOM! You hit a mine. (N)ew or (Q)uit",0
 winMsg     BYTE "You cleared the field! (N)ew or (Q)uit",0
+
+.code
+
+InitBoard PROC
+    pushad
+    mov ecx, BOARD_SIZE
+    mov edi, OFFSET board
+    mov al, 0
+    rep stosb
+
+    xor ebx, ebx
+PlaceLoop:
+    cmp ebx, MINES
+    je DonePlace
+    mov eax, ROWS
+    call RandomRange
+    mov edx, eax
+    mov eax, COLS
+    call RandomRange
+    mov ecx, edx
+    imul ecx, COLS
+    add ecx, eax
+    mov edi, OFFSET board
+    add edi, ecx
+    test BYTE PTR [edi], MINE_MASK
+    jnz PlaceLoop
+    or BYTE PTR [edi], MINE_MASK
+    inc ebx
+    jmp PlaceLoop
