@@ -147,3 +147,34 @@ BumpNeighbors PROC
     popad
     ret
 BumpNeighbors ENDP
+
+BumpOne PROC
+    cmp eax, 0
+    jl BumpRet
+    cmp eax, ROWS
+    jge BumpRet
+    cmp edx, 0
+    jl BumpRet
+    cmp edx, COLS
+    jge BumpRet
+    mov ecx, eax
+    imul ecx, COLS
+    add ecx, edx
+    mov edi, OFFSET board
+    add edi, ecx
+    test BYTE PTR [edi], MINE_MASK
+    jnz BumpRet
+    mov al, [edi]
+    mov ah, al
+    and ah, ADJ_MASK
+    shr ah, 1
+    cmp ah, 8
+    jae BumpRet
+    inc ah
+    shl ah, 1
+    and al, NOT ADJ_MASK
+    or al, ah
+    mov [edi], al
+BumpRet:
+    ret
+BumpOne ENDP
