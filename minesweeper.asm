@@ -197,3 +197,28 @@ DrawRows:
     cmp ecx, ROWS
     jge DoneDrawing
     mov ebx, 0  ; col counter
+    
+DrawCols:
+    cmp ebx, COLS
+    jge NextRow
+    
+    ; Calculate current position in board
+    mov eax, ecx
+    imul eax, COLS
+    add eax, ebx
+    mov edi, OFFSET board
+    add edi, eax
+    mov al, [edi]
+    
+    ; Check if this is cursor position
+    mov dl, cursorRow
+    mov dh, cursorCol
+    cmp dl, cl
+    jne NoCursor
+    cmp dh, bl
+    jne NoCursor
+    ; Set cursor color - FIXED REGISTER USAGE
+    push eax
+    mov eax, yellow + (black SHL 4)
+    call SetTextColor
+    pop eax
