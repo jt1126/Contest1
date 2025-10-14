@@ -1,4 +1,4 @@
-INCLUDE Irvine32.inc
+﻿INCLUDE Irvine32.inc
 
 ROWS   = 8
 COLS   = 8
@@ -23,6 +23,28 @@ loseMsg    BYTE "BOOM! You hit a mine. (N)ew or (Q)uit",0
 winMsg     BYTE "You cleared the field! (N)ew or (Q)uit",0
 
 .code
+main PROC
+    call Randomize
+    call NewGameProc
+    mov eax, 1000        ; 1 second pause
+    call Delay
+    call DrawScreen            ; draw once at start
+    
+GameLoop:
+    call HandleInput           ; AL=1 if state changed
+    test al, al
+    jz   GameLoop              ; no input → skip redraw
+
+    ; if a move caused game over, reveal all mines
+    cmp gameOver, 1
+    jne  CheckWinState
+    call RevealAll             ; <-- new procedure
+    mov eax, 1000        ; 1 second pause
+    call Delay
+    call DrawScreen
+
+
+    jmp  GameLoop
 
 
 NewGameProc PROC
