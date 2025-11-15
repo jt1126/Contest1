@@ -45,3 +45,24 @@ GameLoop:
     
     INVOKE ExitProcess, 0
 main ENDP
+
+; Initialize game variables
+InitializeGame PROC
+    ; Reset board positions to '1'..'9'
+    mov ecx, boardSize      ; 9 cells
+    mov esi, 0
+    mov al, '1'             ; starting character
+
+ResetBoard:
+    mov board[esi], al      ; store '1','2',...,'9'
+    inc al                  ; next character
+    inc esi
+    loop ResetBoard
+
+    ; Reset game state
+    mov currentPlayer, 'X'
+    mov gameOver, 0
+    mov winner, 0
+    
+    ret
+InitializeGame ENDP
