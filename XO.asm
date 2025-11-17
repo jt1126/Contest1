@@ -66,3 +66,22 @@ ResetBoard:
     
     ret
 InitializeGame ENDP
+
+DisplayBoard PROC
+    call Clrscr
+    
+    ; Display title
+    mov edx, OFFSET msgTitle
+    call WriteString
+    call Crlf
+    call Crlf
+    
+    ; Display instructions
+    mov edx, OFFSET msgInstructions
+    call WriteString
+    call Crlf
+    call Crlf
+    
+    ; Display board
+    mov ecx, 3            ; 3 rows
+    mov esi, 0            ; board index
