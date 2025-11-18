@@ -85,3 +85,22 @@ DisplayBoard PROC
     ; Display board
     mov ecx, 3            ; 3 rows
     mov esi, 0            ; board index
+RowLoop:
+    ; Display first row of cells
+    push ecx
+    mov ecx, 3            ; 3 columns
+    
+ColLoop1:
+    mov al, ' '
+    call WriteChar
+    mov al, board[esi]
+    call WriteChar
+    mov al, ' '
+    call WriteChar
+    
+    inc esi
+    cmp ecx, 1
+    je SkipSeparator1
+    
+    mov al, '|'
+    call WriteChar
