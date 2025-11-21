@@ -120,3 +120,10 @@ SkipSeparator1:
     call WriteString
     call Crlf
     pop ecx
+      
+SkipSeparator:
+    loop RowLoop
+    
+    call Crlf
+    ret
+DisplayBoard ENDP
