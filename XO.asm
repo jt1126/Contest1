@@ -104,3 +104,19 @@ ColLoop1:
     
     mov al, '|'
     call WriteChar
+   
+SkipSeparator1:
+    loop ColLoop1
+    
+    call Crlf
+    
+    ; Display separator line (except after last row)
+    pop ecx
+    cmp ecx, 1
+    je SkipSeparator
+    
+    push ecx
+    mov edx, OFFSET lineSeparator
+    call WriteString
+    call Crlf
+    pop ecx
