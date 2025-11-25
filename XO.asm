@@ -127,3 +127,21 @@ SkipSeparator:
     call Crlf
     ret
 DisplayBoard ENDP
+; Main game loop
+PlayGame PROC
+GameTurn:
+    cmp gameOver, 1
+    je GameEnd
+    
+    ; Display current player's turn
+    call DisplayPlayerPrompt
+    
+    ; Get player input
+    call GetPlayerMove
+    
+    ; Update board
+    call UpdateBoard
+    
+    ; Check for win or draw
+    call CheckWin
+    call CheckDraw
