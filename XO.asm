@@ -145,3 +145,15 @@ GameTurn:
     ; Check for win or draw
     call CheckWin
     call CheckDraw
+        
+    ; Switch player
+    call SwitchPlayer
+    
+    ; Redisplay board
+    call DisplayBoard
+    
+    jmp GameTurn
+    
+GameEnd:
+    ret
+PlayGame ENDP
