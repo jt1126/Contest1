@@ -157,3 +157,19 @@ GameTurn:
 GameEnd:
     ret
 PlayGame ENDP
+
+; Display appropriate player prompt
+DisplayPlayerPrompt PROC
+    cmp currentPlayer, 'X'
+    jne DisplayO
+    
+    mov edx, OFFSET msgPlayerX
+    jmp DisplayPrompt
+    
+DisplayO:
+    mov edx, OFFSET msgPlayerO
+    
+DisplayPrompt:
+    call WriteString
+    ret
+DisplayPlayerPrompt ENDP
