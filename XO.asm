@@ -277,4 +277,7 @@ NextCol:
     mov al, board[8]
     cmp al, currentPlayer
     jne CheckOtherDiagonal
-    
+    ; Win found
+    mov winner, al
+    mov gameOver, 1
+    ret
