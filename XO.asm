@@ -260,3 +260,21 @@ CheckCols:
     mov winner, al
     mov gameOver, 1
     ret
+NextCol:
+    inc esi
+    loop CheckCols
+    
+    ; Check diagonals
+    ; Top-left to bottom-right
+    mov al, board[0]
+    cmp al, currentPlayer
+    jne CheckOtherDiagonal
+    
+    mov al, board[4]
+    cmp al, currentPlayer
+    jne CheckOtherDiagonal
+    
+    mov al, board[8]
+    cmp al, currentPlayer
+    jne CheckOtherDiagonal
+    
