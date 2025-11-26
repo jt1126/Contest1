@@ -173,3 +173,29 @@ DisplayPrompt:
     call WriteString
     ret
 DisplayPlayerPrompt ENDP
+
+; Get valid player move (1-9)
+GetPlayerMove PROC
+GetInput:
+    call ReadInt          ; Read integer input
+    
+    ; Validate input (1-9)
+    cmp eax, 1
+    jl InvalidInput
+    cmp eax, 9
+    jg InvalidInput
+    
+    ; Check if position is available
+    dec eax               ; Convert to 0-based index
+    mov esi, eax
+    mov al, board[esi]
+    
+    ; Check if cell contains a digit (available)
+    cmp al, '9'
+    ja InvalidInput
+    cmp al, '1'
+    jb InvalidInput
+    
+    ; Valid input
+    ret
+    
