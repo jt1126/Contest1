@@ -236,3 +236,27 @@ CheckRows:
     mov winner, al
     mov gameOver, 1
     ret
+NextRow:
+    add esi, 3
+    loop CheckRows
+    
+    ; Check columns
+    mov ecx, 3
+    mov esi, 0
+CheckCols:
+    mov al, board[esi]
+    cmp al, currentPlayer
+    jne NextCol
+    
+    mov al, board[esi+3]
+    cmp al, currentPlayer
+    jne NextCol
+    
+    mov al, board[esi+6]
+    cmp al, currentPlayer
+    jne NextCol
+    
+    ; Win found
+    mov winner, al
+    mov gameOver, 1
+    ret
