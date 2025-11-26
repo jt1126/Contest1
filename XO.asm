@@ -198,4 +198,18 @@ GetInput:
     
     ; Valid input
     ret
-    
+InvalidInput:
+    mov edx, OFFSET msgInvalid
+    call WriteString
+    call Crlf
+    call DisplayPlayerPrompt
+    jmp GetInput
+GetPlayerMove ENDP
+
+; Update board with player's move
+UpdateBoard PROC
+    ; esi already contains board index from GetPlayerMove
+    mov al, currentPlayer
+    mov board[esi], al
+    ret
+UpdateBoard ENDP
