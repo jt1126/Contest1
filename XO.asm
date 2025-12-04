@@ -349,3 +349,32 @@ SetToX:
 SwitchEnd:
     ret
 SwitchPlayer ENDP
+
+; Display game result
+DisplayResult PROC
+    call DisplayBoard
+    call Crlf
+    
+    cmp winner, 'X'
+    jne CheckOWinner
+    
+    mov edx, OFFSET msgXWins
+    call WriteString
+    jmp ResultEnd
+    
+CheckOWinner:
+    cmp winner, 'O'
+    jne CheckDrawResult
+    
+    mov edx, OFFSET msgOWins
+    call WriteString
+    jmp ResultEnd
+    
+CheckDrawResult:
+    mov edx, OFFSET msgDraw
+    call WriteString
+    
+ResultEnd:
+    call Crlf
+    ret
+DisplayResult ENDP
