@@ -378,3 +378,29 @@ ResultEnd:
     call Crlf
     ret
 DisplayResult ENDP
+; Ask player if they want to play again
+AskPlayAgain PROC
+    call Crlf
+    mov edx, OFFSET msgPlayAgain
+    call WriteString
+    
+    call ReadChar        ; Read single character
+    call WriteChar       ; Echo it
+    call Crlf
+    
+    ; Check if answer is 'Y' or 'y'
+    cmp al, 'Y'
+    je PlayAgain
+    cmp al, 'y'
+    je PlayAgain
+    
+    ; Any other answer means no
+    mov eax, 0
+    ret
+    
+PlayAgain:
+    mov eax, 1
+    ret
+AskPlayAgain ENDP
+
+END main
