@@ -214,3 +214,25 @@ UpdateBoard PROC
     ret
 UpdateBoard ENDP
 
+; Check if current player has won
+CheckWin PROC
+    ; Check rows
+    mov ecx, 3
+    mov esi, 0
+CheckRows:
+    mov al, board[esi]
+    cmp al, currentPlayer
+    jne NextRow
+    
+    mov al, board[esi+1]
+    cmp al, currentPlayer
+    jne NextRow
+    
+    mov al, board[esi+2]
+    cmp al, currentPlayer
+    jne NextRow
+    
+    ; Win found
+    mov winner, al
+    mov gameOver, 1
+    ret
