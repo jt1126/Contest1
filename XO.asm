@@ -304,3 +304,64 @@ CheckOtherDiagonal:
 NoWin:
     ret
 CheckWin ENDP
+
+; Check for draw (all cells filled)
+CheckDraw PROC
+    cmp gameOver, 1
+    je DrawEnd           ; Game already over (win)
+    
+    mov ecx, boardSize
+    mov esi, 0
+CheckEmpty:
+    mov al, board[esi]
+    ; If any cell contains a digit (1-9), it's empty
+    cmp al, '9'
+    ja NotEmpty
+    cmp al, '1'
+    jb NotEmpty
+    
+    ; Found empty cell - not a draw
+    ret
+    
+NotEmpty:
+    inc esi
+    loop CheckEmpty
+    
+    ; All cells filled - it's a draw
+    mov gameOver, 1
+    mov winner, 0
+    
+DrawEnd:
+    ret
+CheckDraw ENDP
+
+; Check for draw (all cells filled)
+CheckDraw PROC
+    cmp gameOver, 1
+    je DrawEnd           ; Game already over (win)
+    
+    mov ecx, boardSize
+    mov esi, 0
+CheckEmpty:
+    mov al, board[esi]
+    ; If any cell contains a digit (1-9), it's empty
+    cmp al, '9'
+    ja NotEmpty
+    cmp al, '1'
+    jb NotEmpty
+    
+    ; Found empty cell - not a draw
+    ret
+    
+NotEmpty:
+    inc esi
+    loop CheckEmpty
+    
+    ; All cells filled - it's a draw
+    mov gameOver, 1
+    mov winner, 0
+    
+DrawEnd:
+    ret
+CheckDraw ENDP
+
