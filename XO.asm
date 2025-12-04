@@ -335,33 +335,17 @@ DrawEnd:
     ret
 CheckDraw ENDP
 
-; Check for draw (all cells filled)
-CheckDraw PROC
-    cmp gameOver, 1
-    je DrawEnd           ; Game already over (win)
+; Switch between players X and O
+SwitchPlayer PROC
+    cmp currentPlayer, 'X'
+    jne SetToX
     
-    mov ecx, boardSize
-    mov esi, 0
-CheckEmpty:
-    mov al, board[esi]
-    ; If any cell contains a digit (1-9), it's empty
-    cmp al, '9'
-    ja NotEmpty
-    cmp al, '1'
-    jb NotEmpty
+    mov currentPlayer, 'O'
+    jmp SwitchEnd
     
-    ; Found empty cell - not a draw
+SetToX:
+    mov currentPlayer, 'X'
+    
+SwitchEnd:
     ret
-    
-NotEmpty:
-    inc esi
-    loop CheckEmpty
-    
-    ; All cells filled - it's a draw
-    mov gameOver, 1
-    mov winner, 0
-    
-DrawEnd:
-    ret
-CheckDraw ENDP
-
+SwitchPlayer ENDP
