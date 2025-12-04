@@ -281,3 +281,26 @@ NextCol:
     mov winner, al
     mov gameOver, 1
     ret
+    
+CheckOtherDiagonal:
+    ; Top-right to bottom-left
+    mov al, board[2]
+    cmp al, currentPlayer
+    jne NoWin
+    
+    mov al, board[4]
+    cmp al, currentPlayer
+    jne NoWin
+    
+    mov al, board[6]
+    cmp al, currentPlayer
+    jne NoWin
+    
+    ; Win found
+    mov winner, al
+    mov gameOver, 1
+    ret
+    
+NoWin:
+    ret
+CheckWin ENDP
